@@ -24,7 +24,10 @@ void ProverFree(Prover p) {
 
 const char* ProverGetFileName(Prover p) {
     DiskProver* dp = (DiskProver*) p;
-    return dp->GetFilename().c_str();
+    string fileName = dp->GetFilename();
+    char* ptr = new char[fileName.size() + 1]; // +1 for terminating NUL
+    strcpy(ptr, fileName.c_str());
+    return ptr;
 }
 
 void ProverGetId(Prover p, uint8_t* buffer) {
@@ -57,14 +60,14 @@ void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffe
     *count = qualities.size();
 }
 
-const char* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index) {
+const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index) {
+//    cout << "ProverGetFullProof: challenge=" << Util::HexStr(challenge, 32) << endl;
     DiskProver* dp = (DiskProver*) p;
     LargeBits bits = dp->GetFullProof(challenge, index);
     uint8_t k = dp->GetSize();
-    uint8_t *proof_data = new uint8_t[8 * k];
-    bits.ToBytes(proof_data);
-    string s = Util::HexStr(proof_data, k * 8);
-    delete []proof_data;
+//    cout << "Proof: size=" << bits.GetSize() << ", proof=" << bits.ToString() << endl;
 
-    return s.c_str();
+    uint8_t *proof_data = new uint8_t[8 * k]; // 64*k bits
+    bits.ToBytes(proof_data);
+    return proof_data;
 }

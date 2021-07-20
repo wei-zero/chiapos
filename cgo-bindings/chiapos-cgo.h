@@ -21,7 +21,7 @@ extern "C" {
     // Return list of quality string, which is sha256 each
     void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffer, uint64_t* count);
     // Return hex of 60*k bit string
-    const char* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index);
+    const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index);
 
 #ifdef __cplusplus
 }

@@ -71,3 +71,26 @@ const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t i
     bits.ToBytes(proof_data);
     return proof_data;
 }
+
+VerifierGo VerifierGoNew() {
+    VerifierGo ret = new Verifier();
+    return (void*) ret;
+
+}
+void VerifierGoFree(VerifierGo p) {
+    Verifier* vp = (Verifier*) p;
+    delete vp;
+}
+
+const uint8_t* VerifierValidateProof(VerifierGo verifier, const uint8_t* id, uint8_t k,
+                                     const uint8_t* challenge,const uint8_t* proof_bytes,
+                                     uint16_t proof_size) {
+    Verifier* vp = (Verifier*) verifier;
+    LargeBits bits = vp->ValidateProof(id, k, challenge, proof_bytes, proof_size);
+    if (bits.GetSize() == 0) {
+        return nullptr;
+    }
+    uint8_t *data = new uint8_t[32];
+    bits.ToBytes(data);
+    return data;
+}

@@ -9,7 +9,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    // Prover
+    /* Prover */
     typedef void* Prover;
     Prover ProverNew(const char* filePath);
     void ProverFree(Prover p);
@@ -22,6 +22,14 @@ extern "C" {
     void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffer, uint64_t* count);
     // Return hex of 60*k bit string
     const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index);
+
+    /* Verifier */
+    typedef void* VerifierGo;
+    VerifierGo VerifierGoNew();
+    void VerifierGoFree(VerifierGo p);
+    const uint8_t* VerifierValidateProof(VerifierGo verifier, const uint8_t* id, uint8_t k,
+                                         const uint8_t* challenge,const uint8_t* proof_bytes,
+                                         uint16_t proof_size);
 
 #ifdef __cplusplus
 }

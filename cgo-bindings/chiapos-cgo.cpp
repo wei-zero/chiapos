@@ -50,7 +50,7 @@ void ProverGetMemo(Prover p, uint8_t* buffer) {
     dp->GetMemo(buffer);
 }
 
-void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffer, uint64_t* count) {
+void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffer, uint32_t* count) {
     DiskProver* dp = (DiskProver*) p;
     vector<LargeBits> qualities = dp->GetQualitiesForChallenge(challenge);
     for (uint32_t i = 0; i < qualities.size(); i++) {

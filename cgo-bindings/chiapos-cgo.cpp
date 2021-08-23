@@ -57,7 +57,7 @@ void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffe
         uint8_t *pos = buffer+32*i;
         qualities[i].ToBytes(pos);
     }
-    *count = qualities.size();
+    *count = uint64_t(qualities.size());
 }
 
 const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index) {

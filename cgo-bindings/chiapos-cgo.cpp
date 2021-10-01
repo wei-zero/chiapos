@@ -61,15 +61,20 @@ void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffe
 }
 
 const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index) {
-//    cout << "ProverGetFullProof: challenge=" << Util::HexStr(challenge, 32) << endl;
-    DiskProver* dp = (DiskProver*) p;
-    LargeBits bits = dp->GetFullProof(challenge, index);
-    uint8_t k = dp->GetSize();
-//    cout << "Proof: size=" << bits.GetSize() << ", proof=" << bits.ToString() << endl;
+    try {
+        //cout << "ProverGetFullProof: challenge=" << Util::HexStr(challenge, 32) << endl;
+        DiskProver* dp = (DiskProver*) p;
+        LargeBits bits = dp->GetFullProof(challenge, index);
+        uint8_t k = dp->GetSize();
+        //cout << "Proof: size=" << bits.GetSize() << ", proof=" << bits.ToString() << endl;
 
-    uint8_t *proof_data = new uint8_t[8 * k]; // 64*k bits
-    bits.ToBytes(proof_data);
-    return proof_data;
+        uint8_t *proof_data = new uint8_t[8 * k]; // 64*k bits
+        bits.ToBytes(proof_data);
+        return proof_data;
+    } catch (const std::exception &e) {
+        std::cout << "Caught GetFullProof error: " << e.what() << std::endl;
+        return nullptr
+    }
 }
 
 VerifierGo VerifierGoNew() {

@@ -73,7 +73,7 @@ const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t i
         return proof_data;
     } catch (const std::exception &e) {
         std::cout << "Caught GetFullProof error: " << e.what() << std::endl;
-        return nullptr
+        return nullptr;
     }
 }
 

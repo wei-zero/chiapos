@@ -66,7 +66,6 @@ void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffe
         *count = uint64_t(qualities.size());
     } catch (const std::exception &e) {
         std::cout << "Caught ProverGetQualitiesForChallenge error: " << e.what() << std::endl;
-        return nullptr;
     }
 }
 

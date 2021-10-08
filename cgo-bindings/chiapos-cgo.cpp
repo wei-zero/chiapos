@@ -13,8 +13,13 @@
 using namespace std;
 
 Prover ProverNew(const char* filePath) {
-    DiskProver* ret = new DiskProver(string(filePath));
-    return (void*) ret;
+    try {
+        DiskProver* ret = new DiskProver(string(filePath));
+        return (void*)ret;
+    } catch (const std::exception &e) {
+        std::cout << "Caught ProverNew error: " << e.what() << std::endl;
+        return nullptr;
+    }
 }
 
 void ProverFree(Prover p) {
@@ -51,13 +56,18 @@ void ProverGetMemo(Prover p, uint8_t* buffer) {
 }
 
 void ProverGetQualitiesForChallenge(Prover p, uint8_t* challenge, uint8_t* buffer, uint32_t* count) {
-    DiskProver* dp = (DiskProver*) p;
-    vector<LargeBits> qualities = dp->GetQualitiesForChallenge(challenge);
-    for (uint32_t i = 0; i < qualities.size(); i++) {
-        uint8_t *pos = buffer+32*i;
-        qualities[i].ToBytes(pos);
+    try {
+        DiskProver* dp = (DiskProver*)p;
+        vector<LargeBits> qualities = dp->GetQualitiesForChallenge(challenge);
+        for (uint32_t i = 0; i < qualities.size(); i++) {
+            uint8_t* pos = buffer + 32 * i;
+            qualities[i].ToBytes(pos);
+        }
+        *count = uint64_t(qualities.size());
+    } catch (const std::exception &e) {
+        std::cout << "Caught ProverGetQualitiesForChallenge error: " << e.what() << std::endl;
+        return nullptr;
     }
-    *count = uint64_t(qualities.size());
 }
 
 const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t index) {
@@ -72,7 +82,7 @@ const uint8_t* ProverGetFullProof(Prover p, const uint8_t* challenge, uint32_t i
         bits.ToBytes(proof_data);
         return proof_data;
     } catch (const std::exception &e) {
-        std::cout << "Caught GetFullProof error: " << e.what() << std::endl;
+        std::cout << "Caught ProverGetFullProof error: " << e.what() << std::endl;
         return nullptr;
     }
 }

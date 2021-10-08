@@ -52,6 +52,7 @@ include_directories(
   ${gulrak_SOURCE_DIR}/include/ghc
   ${CMAKE_CURRENT_SOURCE_DIR}/../lib/FiniteStateEntropy/lib
   ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/uint128_t
   ${CMAKE_CURRENT_SOURCE_DIR}/test
   )
 
@@ -71,15 +72,15 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Zi")
 
 ELSE()
 IF (CMAKE_BUILD_TYPE STREQUAL "RELEASE")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -mavx512f -mavx512vl")
 ELSE()
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -mavx2 -mavx512f -mavx512vl")
 ENDIF()
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -mavx2 -mavx512f -mavx512vl")
 
 ENDIF()
 

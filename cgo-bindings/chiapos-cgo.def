@@ -1,0 +1,17 @@
+LIBRARY chiapos-cgo.dll
+
+EXPORTS
+ProverNew
+ProverFree
+ProverGetFileName
+ProverGetId
+ProverGetSize
+ProverGetMemoSize
+ProverGetMemo
+ProverGetQualitiesForChallenge
+ProverGetFullProof
+VerifierGoNew
+VerifierGoFree
+VerifierValidateProof
+ThrowException
+CatchException

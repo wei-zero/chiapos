@@ -26,3 +26,4 @@ build
 *.whl
 venv
 .idea
+build_mingw

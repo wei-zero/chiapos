@@ -72,15 +72,15 @@ set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Zi")
 
 ELSE()
 IF (CMAKE_BUILD_TYPE STREQUAL "RELEASE")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2 -mavx512f -mavx512vl")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
 ELSE()
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -mavx2 -mavx512f -mavx512vl")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 ENDIF()
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -mavx2 -mavx512f -mavx512vl")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -mavx2 -mavx512f -mavx512vl")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g")
 
 ENDIF()
 
@@ -133,7 +133,7 @@ ENDIF()
 
 pybind11_add_module(chiapos ${CMAKE_CURRENT_SOURCE_DIR}/python-bindings/chiapos.cpp src/chacha8.c ${BLAKE3_SRC})
 
-add_library(chiapos-cgo STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
+add_library(chiapos-cgo SHARED ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
 
 add_executable(ProofOfSpace
     src/cli.cpp

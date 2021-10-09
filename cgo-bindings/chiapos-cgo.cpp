@@ -108,3 +108,31 @@ const uint8_t* VerifierValidateProof(VerifierGo verifier, const uint8_t* id, uin
     bits.ToBytes(data);
     return data;
 }
+
+void ThrowException(int8_t ec) {
+    if (ec == 1) {
+        throw std::runtime_error("runtime_error");
+    } else if (ec == 2) {
+        throw std::invalid_argument("invalid_argument");
+    } else if (ec == 3) {
+        void* x = nullptr;
+        delete x;
+    } else if (ec == 4) {
+        double balance[2] = {1000.0, 2.0};
+        std::cout << balance[ec];
+    } else if (ec == 5) {
+        int x = 10;
+        int y = 0;
+        std::cout << x/y;
+    } else if (ec == 6) {
+
+    }
+}
+
+void CatchException(int8_t ec) {
+    try {
+        ThrowException(ec);
+    } catch (const std::exception &e) {
+        std::cout << "Caught exception: " << e.what() << std::endl;
+    }
+}

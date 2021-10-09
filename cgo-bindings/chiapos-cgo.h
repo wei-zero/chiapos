@@ -31,6 +31,9 @@ extern "C" {
                                          const uint8_t* challenge,const uint8_t* proof_bytes,
                                          uint16_t proof_size);
 
+    /* Debug */
+    void ThrowException(int8_t ec);
+    void CatchException(int8_t ec);
 #ifdef __cplusplus
 }
 #endif

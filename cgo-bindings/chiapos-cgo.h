@@ -7,7 +7,11 @@
 
 #include "stdint.h"
 
+#if defined (_MSC_VER)
 #define API __declspec(dllexport)
+#else
+#define API extern
+#endif
 
 #ifdef __cplusplus
 extern "C" {

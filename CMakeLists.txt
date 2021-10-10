@@ -133,7 +133,13 @@ ENDIF()
 
 pybind11_add_module(chiapos ${CMAKE_CURRENT_SOURCE_DIR}/python-bindings/chiapos.cpp src/chacha8.c ${BLAKE3_SRC})
 
-add_library(chiapos-cgo SHARED ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
+IF (WIN32)
+  set(CGO_LIB_TYPE "SHARED")
+ELSE()
+  set(CGO_LIB_TYPE "STATIC")
+ENDIF()
+
+add_library(chiapos-cgo ${CGO_LIB_TYPE} ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
 
 add_executable(ProofOfSpace
     src/cli.cpp

@@ -79,8 +79,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 ENDIF()
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g -DBLAKE3_NO_SSE2 -DBLAKE3_NO_SSE41 -DBLAKE3_NO_AVX2 -DBLAKE3_NO_AVX512")
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -DBLAKE3_NO_SSE2 -DBLAKE3_NO_SSE41 -DBLAKE3_NO_AVX2 -DBLAKE3_NO_AVX512")
 
 ENDIF()
 
@@ -110,9 +110,6 @@ set(BLAKE3_SRC
     src/b3/blake3.c
     src/b3/blake3_portable.c
     src/b3/blake3_dispatch.c
-    src/b3/blake3_avx2.c
-    src/b3/blake3_avx512.c
-    src/b3/blake3_sse41.c
 )
 ELSEIF(OSX_NATIVE_ARCHITECTURE STREQUAL "arm64")
 set(BLAKE3_SRC
@@ -131,7 +128,7 @@ set(BLAKE3_SRC
 )
 ENDIF()
 
-pybind11_add_module(chiapos ${CMAKE_CURRENT_SOURCE_DIR}/python-bindings/chiapos.cpp src/chacha8.c ${BLAKE3_SRC})
+#pybind11_add_module(chiapos ${CMAKE_CURRENT_SOURCE_DIR}/python-bindings/chiapos.cpp src/chacha8.c ${BLAKE3_SRC})
 
 IF (WIN32)
   set(CGO_LIB_TYPE "SHARED")
@@ -139,20 +136,20 @@ ELSE()
   set(CGO_LIB_TYPE "STATIC")
 ENDIF()
 
-add_library(chiapos-cgo ${CGO_LIB_TYPE} ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
+add_library(chiapos-cgo STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cgo-bindings/chiapos-cgo.cpp src/chacha8.c ${BLAKE3_SRC})
 
-add_executable(ProofOfSpace
-    src/cli.cpp
-    src/chacha8.c
-    ${BLAKE3_SRC}
-)
-
-add_executable(RunTests
-    tests/test-main.cpp
-    tests/test.cpp
-    src/chacha8.c
-    ${BLAKE3_SRC}
-)
+#add_executable(ProofOfSpace
+#    src/cli.cpp
+#    src/chacha8.c
+#    ${BLAKE3_SRC}
+#)
+#
+#add_executable(RunTests
+#    tests/test-main.cpp
+#    tests/test.cpp
+#    src/chacha8.c
+#    ${BLAKE3_SRC}
+#)
 
 find_package(Threads REQUIRED)
 
@@ -160,9 +157,9 @@ add_library(uint128 STATIC uint128_t/uint128_t.cpp)
 target_include_directories(uint128 PUBLIC uint128_t)
 
 target_compile_features(fse PUBLIC cxx_std_17)
-target_compile_features(chiapos PUBLIC cxx_std_17)
+#target_compile_features(chiapos PUBLIC cxx_std_17)
 target_compile_features(chiapos-cgo PUBLIC cxx_std_17)
-target_compile_features(RunTests PUBLIC cxx_std_17)
+#target_compile_features(RunTests PUBLIC cxx_std_17)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   target_link_libraries(chiapos PRIVATE fse Threads::Threads)
@@ -180,16 +177,16 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   target_link_libraries(ProofOfSpace fse Threads::Threads)
   target_link_libraries(RunTests fse Threads::Threads)
 elseif (MSVC)
-  target_link_libraries(chiapos PRIVATE fse Threads::Threads uint128)
+#  target_link_libraries(chiapos PRIVATE fse Threads::Threads uint128)
   target_link_libraries(chiapos-cgo PRIVATE fse Threads::Threads uint128)
-  target_link_libraries(ProofOfSpace fse Threads::Threads uint128)
-  target_link_libraries(RunTests fse Threads::Threads uint128)
+#  target_link_libraries(ProofOfSpace fse Threads::Threads uint128)
+#  target_link_libraries(RunTests fse Threads::Threads uint128)
 else()
-  target_link_libraries(chiapos PRIVATE fse stdc++fs Threads::Threads)
-  target_link_libraries(chiapos-cgo PRIVATE fse stdc++fs Threads::Threads)
-  target_link_libraries(ProofOfSpace fse stdc++fs Threads::Threads)
-  target_link_libraries(RunTests fse stdc++fs Threads::Threads)
+#  target_link_libraries(chiapos PRIVATE fse stdc++fs Threads::Threads)
+  target_link_libraries(chiapos-cgo PRIVATE fse stdc++fs Threads::Threads uint128)
+#  target_link_libraries(ProofOfSpace fse stdc++fs Threads::Threads)
+#  target_link_libraries(RunTests fse stdc++fs Threads::Threads)
 endif()
 
-enable_testing()
-add_test(NAME RunTests COMMAND RunTests)
+#enable_testing()
+#add_test(NAME RunTests COMMAND RunTests)
